@@ -1,4 +1,10 @@
 body {
-	display: grid;
-	grid-template-columns: 2fr 8fr
+  display: grid;
+  grid-template-columns: 2fr 8fr;
+}
+#show-panel {
+	margin-left: 20px;
+}
+#show-panel .title {
+	font-weight: bold;
 }
