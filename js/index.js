@@ -31,21 +31,39 @@ function displayBookDetails(book) {
     <button class="like">LIKE</button>
   `;
   const like = showPanel.querySelector(".like");
-  like.addEventListener("click", () => addLike(book));
+  like.addEventListener("click", () => {
+    console.log(book.users);
+    const currentUser = { id: 1, username: "pouros" };
+    if (book.users.some((user) => user.id == currentUser.id)) {
+      const updatedUsers = book.users.filter(
+        (user) => user.id !== currentUser.id
+      );
+      console.log(updatedUsers);
+      const data = { users: updatedUsers };
+      console.log(data);
+      addLike(book.id, data);
+    } else {
+      const updatedUsers = book.users.concat(currentUser);
+      const data = { users: updatedUsers };
+      console.log(data);
+      addLike(book.id, data);
+    }
+  });
 }
 
 //function to add likes
-function addLike(book) {
-  fetch(`http://localhost:3000/books/${book.id}`, {
+function addLike(book, data) {
+  fetch(`http://localhost:3000/books/${book}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      users: [...book.users, { id: 1, username: "pouros" }],
-    }),
+    body: JSON.stringify(data),
   })
     .then((res) => res.json())
-    .then((data) => console.log(data))
+    .then((data) => {
+      console.log(data);
+      displayBookDetails(data);
+    })
     .catch((error) => console.error(error));
 }
